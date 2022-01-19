@@ -73,3 +73,16 @@ class UserSettings(models.Model):
 
     class Meta:
         verbose_name_plural = 'Пользовательские настройки'
+
+
+class Sympathy(models.Model):
+    who = models.ForeignKey(User, on_delete=models.CASCADE, related_name='who')
+    whom = models.ForeignKey(User, on_delete=models.CASCADE, related_name='whom')
+    matching = models.BooleanField(verbose_name='Взаимно?', default=False)
+
+    def __str__(self):
+        return f'{self.who} оценил {self.whom}'
+
+    class Meta:
+        verbose_name = 'Взаимная симпатия'
+        constraints = [models.UniqueConstraint(fields=('who', 'whom'), name='unique_matching')]
