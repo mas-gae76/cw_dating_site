@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GetPair - {% block title %}сайт знакомств{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/logo.ico' %}">
+</head>
+<body>
+
+<header>
+    <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt="GetPair" title="GetPair"></a>
+    <div class="logo_container">
+        <div class="title">
+            <h2 translate="no">GetPair</h2>
+        </div>
+        <div class="role">
+            <p>Сайт знакомств</p>
+        </div>
+    </div>
+    <nav>
+
+    </nav>
+</header>
+
+<nav>
+
+</nav>
+
+<section>
+    {% block content %}{% endblock %}
+</section>
+
+<footer>
+
+</footer>
+
+</body>
+</html>
