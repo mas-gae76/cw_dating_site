@@ -7,27 +7,28 @@
     <title>GetPair - {% block title %}сайт знакомств{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
     <link rel="shortcut icon" href="{% static 'img/logo.ico' %}">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+            integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+            crossorigin="anonymous">
+    </script>
 </head>
 <body>
-
-<header>
-    <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt="GetPair" title="GetPair"></a>
-    <div class="logo_container">
-        <div class="title">
-            <h2 translate="no">GetPair</h2>
-        </div>
-        <div class="role">
-            <p>Сайт знакомств</p>
-        </div>
-    </div>
-    <nav>
-
-    </nav>
-</header>
-
-<nav>
-
-</nav>
+    <header>
+        <nav class="header_container">
+            <div class="logo_container">
+                <a class="logo" href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt="GetPair" title="GetPair"></a>
+                <div class="describer">
+                    <div class="title"><h2 translate="no">GetPair</h2></div>
+                    <div class="role">cайт знакомств</div>
+                </div>
+            </div>
+            <div class="nav-toggle"><span></span></div>
+            <div class="auth_container">
+                <div class="signup"><a href="#" style="color:#000">Вход</a></div>
+                <div class="register"><a href="#" style="color:#fff">Регистрация</a></div>
+            </div>
+        </nav>
+    </header>
 
 <section>
     {% block content %}{% endblock %}
