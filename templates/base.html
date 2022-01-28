@@ -30,12 +30,26 @@
         </nav>
     </header>
 
-<section>
+<main>
     {% block content %}{% endblock %}
-</section>
+</main>
 
 <footer>
-
+    <div class="footer_container">
+        <div class="logo">
+            <div class="copyright-mark">
+                <p><img src="{% static 'img/logo.ico' %}" alt="GetPair" title="GetPair">
+                <span class="title">GetPair</span> - сайт знакомств</p>
+            </div>
+            <div>&copy; {{ current_year }} Все права защищены</div>
+        </div>
+        <div class="privacy">
+            <a href="#">Политика конфиденциальности</a>
+        </div>
+        <div class="terms">
+            <a href="#">Условия пользования</a>
+        </div>
+    </div>
 </footer>
 
 </body>
