@@ -5,7 +5,7 @@
         <div class="main_item"><img src="{% static 'img/man.png' %}" alt="Человек на сайте знакомств"></div>
         <div class="main_item">
             <h3>Регистрация</h3>
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 {{ form.as_p }}
                 {% csrf_token %}
                 <button type="submit">Регистрация</button>
