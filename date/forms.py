@@ -4,15 +4,9 @@ from django import forms
 
 
 class RegisterForm(UserCreationForm):
-    email = forms.EmailField(required=True, label='Электронная почта', error_messages={'invalid': 'Неверный формат email!'})
-    first_name = forms.CharField(max_length=40, label='Имя')
-    last_name = forms.CharField(max_length=40, label='Фамилия')
     birthday = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), label='Дата рождения')
-    gender = forms.ChoiceField(choices=User.Gender.choices, label='Пол')
-    avatar = forms.ImageField(label='Фото', required=False)
     password1 = forms.CharField(widget=forms.PasswordInput, label='Пароль', error_messages={
-        'invalid': 'Пароль должен быть не менее 8 символов и не содержать только цифры'}
-                                )
+        'invalid': 'Пароль должен быть не менее 8 символов и не содержать только цифры'})
     password2 = forms.CharField(widget=forms.PasswordInput, label='Подтвердите пароль')
 
     class Meta:
