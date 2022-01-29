@@ -17,7 +17,7 @@ class User(AbstractUser):
     username = models.CharField(blank=True, verbose_name='Никнейм', max_length=10)
     email = models.EmailField(verbose_name='Email', unique=True, max_length=128)
     birthday = models.DateField(verbose_name='Дата рождения')
-    avatar = models.ImageField(verbose_name='Фото', default=None, upload_to=get_timestamp_path_user)
+    avatar = models.ImageField(verbose_name='Фото', default=None, upload_to=get_timestamp_path_user, blank=True)
     gender = models.CharField(max_length=1, verbose_name='Пол', choices=Gender.choices, default=None)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -27,10 +27,10 @@ class User(AbstractUser):
         if self.avatar:
             avatar = Image.open(self.avatar.path)
             watermark = Image.open(settings.WATERMARK_PATH)
-            watermark.thumbnail((200, 200))
+            watermark.thumbnail((100, 100))
             x = avatar.size[0] - watermark.size[0] - 20
             y = avatar.size[1] - watermark.size[1] - 20
-            avatar.paste(watermark, (x, y))
+            avatar.paste(watermark, (x, y), mask=watermark)
             avatar.save(self.avatar.path)
 
     def __str__(self):
