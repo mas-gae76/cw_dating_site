@@ -13,10 +13,10 @@ class User(AbstractUser):
         FEMALE = 'Ж', 'Женский'
 
     first_name = models.CharField(verbose_name='Имя', max_length=40)
-    last_name = models.CharField(verbose_name='Фамилия', max_length=50)
+    last_name = models.CharField(verbose_name='Фамилия', max_length=40)
     username = models.CharField(blank=True, verbose_name='Никнейм', max_length=10)
     email = models.EmailField(verbose_name='Email', unique=True, max_length=128)
-    birthday = models.DateField(verbose_name='Дата рождения', default='1970-01-01')
+    birthday = models.DateField(verbose_name='Дата рождения')
     avatar = models.ImageField(verbose_name='Фото', default=None, upload_to=get_timestamp_path_user)
     gender = models.CharField(max_length=1, verbose_name='Пол', choices=Gender.choices, default=None)
     USERNAME_FIELD = 'email'
