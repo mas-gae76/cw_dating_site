@@ -1,11 +1,11 @@
 from django.views.generic import ListView
 from .models import *
 from datetime import datetime
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import CreateView
-from .forms import RegisterForm
-from django.contrib.auth import login
-from django.shortcuts import redirect
+from .forms import RegisterForm, LoginForm
+from django.contrib.auth import login, authenticate
+from django.shortcuts import redirect, render, reverse
 
 
 class UserView(ListView):
@@ -24,4 +24,20 @@ class RegisterView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('index')
+        return render(self.request, 'index.html', context={'user': user})
+
+
+class UserLoginView(LoginView):
+    template_name = 'login.html'
+    authentication_form = LoginForm
+    extra_context = {'current_year': datetime.today().year}
+
+    def form_valid(self, form):
+        cd = form.cleaned_data
+        user = authenticate(self.request, email=cd['username'], password=cd['password'])
+        login(self.request, user)
+        return redirect(reverse('index'))
+
+
+class UserLogoutView(LogoutView):
+    next_page = 'index'

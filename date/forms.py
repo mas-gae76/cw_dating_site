@@ -14,7 +14,7 @@ class RegisterForm(UserCreationForm):
         fields = ('email', 'first_name', 'last_name', 'birthday', 'gender', 'avatar', 'password1', 'password2')
 
     def clean_password2(self):
-        cd  = self.cleaned_data
+        cd = self.cleaned_data
         if cd['password1'] != cd['password2']:
             raise forms.ValidationError('Пароли не совпадают!\r\n Попытайтесь снова')
         return cd['password2']
@@ -24,3 +24,10 @@ class RegisterForm(UserCreationForm):
         if User.objects.filter(email=cd['email']).exists():
             raise forms.ValidationError('Пользователь с таким email уже существует!')
         return cd['email']
+
+
+class LoginForm(AuthenticationForm):
+
+    class Meta:
+        model = User
+        fields = ('email', 'password')
