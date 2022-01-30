@@ -3,13 +3,17 @@
 {% block title %}Вход{% endblock %}
 {% block content %}
     <div class="main_container">
-        <div class="main_item">
+        <div class="main_item"><img src="{% static 'img/man.png' %}" alt="Человек на сайте знакомств"></div>
+        <div id="login" class="main_item">
             <h3>Вход</h3>
             <form method="post">
                 {{ form.as_p }}
                 {% csrf_token %}
                 <button type="submit">Войти</button>
             </form>
+        </div>
+        <div class="main_item">
+            <div><img src="{% static 'img/dating.png' %}" alt="Пара"></div>
         </div>
     </div>
 {% endblock %}
