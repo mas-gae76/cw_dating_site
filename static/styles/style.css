@@ -77,7 +77,7 @@ img {
     font-size: .7em;
     width: 15%;
     color: black;
-    margin-right: 3.5%;
+    margin-right: 2%;
 }
 .register {
     padding: 5%;
@@ -91,13 +91,21 @@ img {
     -webkit-box-shadow: 0 0 40px 2px #cb8aa0;
     -moz-box-shadow: 0 0 40px 2px #cb8aa0;
 }
-.signup {
+.login {
     padding: 5%;
     border-radius: 20px;
     opacity: 85%;
 }
-.signup:hover {
+.login:hover {
     border: 1px solid black;
+}
+.profile {
+    display: flex;
+    align-items: center;
+    margin-right: 0;
+}
+.auth_container img {
+    border-radius: 50%;
 }
 
 /* Main styles */
