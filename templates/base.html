@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load thumbnail %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -22,10 +23,17 @@
                     <div class="role">cайт знакомств</div>
                 </div>
             </div>
-            <div class="nav-toggle"><span></span></div>
             <div class="auth_container">
-                <div class="signup"><a href="#" style="color:#000">Вход</a></div>
-                <div class="register"><a href="#" style="color:#fff">Регистрация</a></div>
+                {% if user.is_authenticated %}
+                    <div class="profile">
+                        <a href="#">{{ user.last_name }} {{ user.first_name }}</a>
+                    </div>
+                    <img src="{% thumbnail user.avatar 'default' %}" alt="Аватар">
+                {% else %}
+                    <div class="nav-toggle"><span></span></div>
+                    <div class="login"><a href="{% url 'login' %}" style="color:#000">Вход</a></div>
+                    <div class="register"><a href="{% url 'signup' %}" style="color:#fff">Регистрация</a></div>
+                {% endif %}
             </div>
         </nav>
     </header>
