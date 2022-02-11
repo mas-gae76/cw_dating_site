@@ -1,7 +1,25 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load thumbnail %}
 {% block content %}
-    <div class="main_container">
-
+    <div class="user_container">
+        {% for user in user_list %}
+            <div class="user_preview">
+                {% if user.avatar %}
+                    <p><img src="{% thumbnail user.avatar 'default' %}" alt="{{ user.last_name }} {{ user.first_name }}"></p>
+                {% else %}
+                    <p><img src="{% thumbnail 'img/default.png' 'default' %}" alt=""></p>
+                {% endif %}
+                <p>{{ user.last_name }} {{ user.first_name }}</p>
+                <p>
+                    <span class="fa-star"></span>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </p>
+                <p>{{ user.birthday }}</p>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
