@@ -3,6 +3,7 @@ from .models import *
 from datetime import datetime
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import CreateView
+from django.views.generic.detail import DetailView
 from .forms import RegisterForm, LoginForm
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect, render, reverse
@@ -37,6 +38,11 @@ class UserLoginView(LoginView):
         user = authenticate(self.request, email=cd['username'], password=cd['password'])
         login(self.request, user)
         return redirect(reverse('index'))
+
+
+class DetailUserView(DetailView):
+    model = User
+    template_name = 'profile.html'
 
 
 class UserLogoutView(LogoutView):
