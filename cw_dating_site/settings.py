@@ -24,7 +24,7 @@ WATERMARK_PATH = os.path.join(BASE_DIR, 'static/img/full_logo.png')
 THUMBNAIL_ALIASES = {
     '': {
         'default': {
-            'size': (50, 50),
+            'size': (60, 60),
             'crop': 'scale',
         },
     },
