@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from uuid import uuid4
 from PIL import Image
 from django.conf import settings
 from .utils import get_timestamp_path_user
@@ -12,11 +13,13 @@ class User(AbstractUser):
         MALE = 'М', 'Мужской'
         FEMALE = 'Ж', 'Женский'
 
+    id = models.UUIDField(primary_key=True, default=uuid4, null=False)
     first_name = models.CharField(verbose_name='Имя', max_length=40)
     last_name = models.CharField(verbose_name='Фамилия', max_length=40)
     username = models.CharField(blank=True, verbose_name='Никнейм', max_length=10)
     email = models.EmailField(verbose_name='Email', unique=True, max_length=128)
     birthday = models.DateField(verbose_name='Дата рождения')
+    description = models.CharField(verbose_name='Описание', max_length=150, null=True)
     avatar = models.ImageField(verbose_name='Фото', default=None, upload_to=get_timestamp_path_user, blank=True)
     gender = models.CharField(max_length=1, verbose_name='Пол', choices=Gender.choices, default=None)
     USERNAME_FIELD = 'email'
@@ -42,16 +45,9 @@ class User(AbstractUser):
         ordering = ['last_name']
 
 
-class Rating(models.Model):
-    value = models.IntegerField(verbose_name='Рейтинг')
-
-    class Meta:
-        verbose_name = 'Рейтинг'
-
-
 class UserRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.ForeignKey(Rating, on_delete=models.PROTECT)
+    rating = models.PositiveIntegerField(verbose_name='Рейтинг')
 
     class Meta:
         verbose_name = 'Рейтинг пользователей'
