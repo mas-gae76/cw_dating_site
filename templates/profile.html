@@ -3,14 +3,13 @@
 {% load thumbnail %}
 {% block content %}
     <div class="user_container">
-        {% for customer in user_list %}
             <div class="user_preview">
-                {% if customer.avatar %}
-                    <p><img src="{% thumbnail customer.avatar 'default' %}" alt="{{ customer.last_name }} {{ customer.first_name }}"></p>
+                {% if user.avatar %}
+                    <p><img src="{% thumbnail user.avatar 'default' %}" alt="{{ user.last_name }} {{ user.first_name }}"></p>
                 {% else %}
                     <p><img src="{% static 'img/default.png' %}" alt="" style="width: 60px; height: 60px"></p>
                 {% endif %}
-                <p><a href="{% url 'profile' customer.pk %}">{{ customer.last_name }} {{ customer.first_name }}</a></p>
+                <p>{{ user.last_name }} {{ user.first_name }}</p>
                 <div class="rating">
                     <div class="rating_body">
                         <div class="rating_active"></div>
@@ -24,8 +23,12 @@
                     </div>
                     <div class="rating_value">3.7</div>
                 </div>
-                <p>{{ customer.birthday }}</p>
+                <p>{{ user.birthday }}</p>
+            {% if user.description %}
+                <p>{{ user.description }}</p>
+            {% else %}
+                <p>Пользователь не оставил информации о себе</p>
+            {% endif %}
             </div>
-        {% endfor %}
     </div>
 {% endblock %}

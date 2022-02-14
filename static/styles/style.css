@@ -79,6 +79,9 @@ img {
     color: black;
     margin-right: 2%;
 }
+.auth_container img {
+    border-radius: 50%;
+}
 .register {
     padding: 5%;
     color: #ffffff;
@@ -109,9 +112,6 @@ img {
 main {
     justify-content: center;
     margin: 2% 0 4% 0;
-}
-main img {
-    border-radius: 50%;
 }
 .main_container {
     display: flex;
@@ -204,6 +204,9 @@ input {
     font-size: .65em;
     width: 83%;
     padding: 3%;
+}
+.user_preview img {
+    border-radius: 50%;
 }
 /* Rating styles */
 .rating {

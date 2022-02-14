@@ -26,11 +26,15 @@
                 </div>
             </div>
             <div class="auth_container">
-                {% if user.is_authenticated %}
+                {% if request.user.is_authenticated %}
                     <div class="profile">
-                        <a href="#">{{ user.last_name }} {{ user.first_name }}</a>
+                        <a href="{% url 'profile' request.user.pk %}">{{ request.user.last_name }} {{ request.user.first_name }}</a>
                     </div>
-                    <img src="{% thumbnail user.avatar 'default' %}" alt="Аватар">
+                    {% if request.user.avatar %}
+                        <img src="{% thumbnail request.user.avatar 'default' %}" alt="{{ request.user.last_name }} {{ request.user.first_name }}">
+                    {% else %}
+                        <img src="{% static 'img/default.png' %}" alt="" style="width: 60px; height: 60px">
+                    {% endif %}
                 {% else %}
                     <div class="nav-toggle"><span></span></div>
                     <div class="login"><a href="{% url 'login' %}" style="color:#000">Вход</a></div>
