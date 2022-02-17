@@ -3,7 +3,7 @@
 {% load thumbnail %}
 {% block content %}
     <div class="user_container">
-            <div class="user_preview">
+        <div class="user_preview">
                 {% if user.avatar %}
                     <p><img src="{% thumbnail user.avatar 'default' %}" alt="{{ user.last_name }} {{ user.first_name }}"></p>
                 {% else %}
@@ -24,11 +24,31 @@
                     <div class="rating_value">3.7</div>
                 </div>
                 <p>{{ user.birthday }}</p>
-            {% if user.description %}
-                <p>{{ user.description }}</p>
-            {% else %}
-                <p>Пользователь не оставил информации о себе</p>
-            {% endif %}
+                {% if user.gender == 'М' %}
+                    <p>Пол: Мужской</p>
+                {% elif  user.gender == 'Ж' %}
+                    <p>Пол: Женский</p>
+                {% else %}
+                    <p>Пол: Не указан</p>
+                {% endif %}
+                {% if user.description %}
+                    <p>{{ user.description }}</p>
+                {% else %}
+                    <p>Пользователь не оставил информации о себе</p>
+                {% endif %}
+            <div class="rating_form">
+                <p>Вы ещё не оценивали этого участника. Хотите оценить?</p>
+                <form id="rating_form" method="get" name="{{ user.id }}" action="{% url 'profile' user.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="fa fa-star fa-2x" id="first"></button>
+                    <button type="submit" class="fa fa-star fa-2x" id="second"></button>
+                    <button type="submit" class="fa fa-star fa-2x" id="third"></button>
+                    <button type="submit" class="fa fa-star fa-2x" id="fourth"></button>
+                    <button type="submit" class="fa fa-star fa-2x" id="fifth"></button>
+
+                </form>
+
             </div>
+        </div>
     </div>
 {% endblock %}
