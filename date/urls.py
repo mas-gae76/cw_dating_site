@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^logout$', UserLogoutView.as_view(), name='logout'),
     url(r'^$', UserView.as_view(), name='index'),
     path('profile/<uuid:pk>', DetailUserView.as_view(), name='profile'),
+    path('profile/<uuid:pk>/rate', rate_user, name='rate'),
 ]
