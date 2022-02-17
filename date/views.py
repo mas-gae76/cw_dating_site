@@ -7,14 +7,27 @@ from django.views.generic.detail import DetailView
 from .forms import RegisterForm, LoginForm
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect, render, reverse
+from django.conf import settings
+from django.core.cache import cache
+
+
+# TODO: удаление/обновление кэша при удалении/обновлении объекта БД
 
 
 class UserView(ListView):
     model = User
     paginate_by = 50
     template_name = 'index.html'
-    queryset = User.objects.exclude(is_staff=True)
     extra_context = {'current_year': datetime.today().year}
+
+    def get_queryset(self):
+        if 'users' in cache:
+            users = cache.get('users')
+            return users
+        else:
+            results = User.objects.exclude(is_staff=True)
+            cache.set('users', results, timeout=settings.CACHE_TTL)
+            return results
 
 
 class RegisterView(CreateView):
@@ -47,3 +60,11 @@ class DetailUserView(DetailView):
 
 class UserLogoutView(LogoutView):
     next_page = 'index'
+
+
+def rate_user(request, pk):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        rating_value = request.POST.get('rating_value')
+        UserRating.objects.create(user=User.objects.get(id=user_id), rating=rating_value)
+        return reverse('profile')
