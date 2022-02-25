@@ -36,19 +36,19 @@
                 {% else %}
                     <p>Пользователь не оставил информации о себе</p>
                 {% endif %}
-            <div class="rating_form">
-                <p>Вы ещё не оценивали этого участника. Хотите оценить?</p>
-                <form id="rating_form" method="get" name="{{ user.id }}" action="{% url 'profile' user.pk %}">
-                    {% csrf_token %}
-                    <button type="submit" class="fa fa-star fa-2x" id="first"></button>
-                    <button type="submit" class="fa fa-star fa-2x" id="second"></button>
-                    <button type="submit" class="fa fa-star fa-2x" id="third"></button>
-                    <button type="submit" class="fa fa-star fa-2x" id="fourth"></button>
-                    <button type="submit" class="fa fa-star fa-2x" id="fifth"></button>
-
-                </form>
-
-            </div>
+            {% if request.user.is_authenticated %}
+                <div class="rating_form">
+                    <p>Вы ещё не оценивали этого участника. Хотите оценить?</p>
+                    <form id="rating_form" method="get" name="{{ user.id }}" action="{% url 'profile' user.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="fa fa-star fa-2x" id="first"></button>
+                        <button type="submit" class="fa fa-star fa-2x" id="second"></button>
+                        <button type="submit" class="fa fa-star fa-2x" id="third"></button>
+                        <button type="submit" class="fa fa-star fa-2x" id="fourth"></button>
+                        <button type="submit" class="fa fa-star fa-2x" id="fifth"></button>
+                    </form>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

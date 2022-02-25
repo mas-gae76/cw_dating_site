@@ -48,6 +48,7 @@ class User(AbstractUser):
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
     rating = models.PositiveIntegerField(verbose_name='Рейтинг')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Рейтинг пользователей'

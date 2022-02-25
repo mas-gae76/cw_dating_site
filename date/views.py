@@ -70,5 +70,5 @@ def rate_user(request, pk):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
         rating_value = request.POST.get('rating_value')
-        Rating.objects.create(user=User.objects.get(id=user_id), rating=rating_value)
+        Rating.objects.create(user=User.objects.get(id=user_id), rating=rating_value, sender=request.user)
         return redirect('profile')
