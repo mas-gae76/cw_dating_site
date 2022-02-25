@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'django_cleanup',
     'date.apps.DateConfig',
     'easy_thumbnails',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -65,7 +66,12 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+INTERNAL_IPS = [
+    '127.0.0.1',
 ]
 
 ROOT_URLCONF = 'cw_dating_site.urls'
