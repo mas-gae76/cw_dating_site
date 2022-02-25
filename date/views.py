@@ -9,6 +9,7 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect, render, reverse
 from django.conf import settings
 from django.core.cache import cache
+from django.db.models import Avg
 
 
 # TODO: удаление/обновление кэша при удалении/обновлении объекта БД
@@ -25,7 +26,7 @@ class UserView(ListView):
             users = cache.get('users')
             return users
         else:
-            results = User.objects.exclude(is_staff=True)
+            results = User.objects.annotate(average_rating=Avg('ratings__rating')).exclude(is_staff=True)
             cache.set('users', results, timeout=settings.CACHE_TTL)
             return results
 
@@ -57,6 +58,9 @@ class DetailUserView(DetailView):
     model = User
     template_name = 'profile.html'
 
+    def get_queryset(self):
+        return cache.get('users').filter(id=self.kwargs['pk'])
+
 
 class UserLogoutView(LogoutView):
     next_page = 'index'
@@ -66,5 +70,5 @@ def rate_user(request, pk):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
         rating_value = request.POST.get('rating_value')
-        UserRating.objects.create(user=User.objects.get(id=user_id), rating=rating_value)
-        return reverse('profile')
+        Rating.objects.create(user=User.objects.get(id=user_id), rating=rating_value)
+        return redirect('profile')
