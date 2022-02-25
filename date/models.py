@@ -45,8 +45,8 @@ class User(AbstractUser):
         ordering = ['last_name']
 
 
-class UserRating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
     rating = models.PositiveIntegerField(verbose_name='Рейтинг')
 
     class Meta:
