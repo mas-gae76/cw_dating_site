@@ -20,6 +20,7 @@ a {
     text-decoration: none;
     outline: none;
     color: #000;
+    cursor: pointer;
 }
 a:hover {
     color: #e5759b;
@@ -104,8 +105,30 @@ img {
 }
 .profile {
     display: flex;
+    flex-direction: column;
     align-items: center;
     margin-right: 0;
+    position: relative;
+}
+/* Submenu profile */
+.submenu_profile {
+    position: absolute;
+    width: 110%;
+    color: rgba(12, 12, 12, 0.42);
+    font-family: "Lobster", Helvetica, Arial, sans-serif;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: .5px solid rgba(134, 131, 131, 0.42);
+    border-radius: 0 0 10px 10px;
+    box-shadow: 3px 3px 3px #cb8aa0;
+    -webkit-box-shadow: 3px 3px 3px #cb8aa0;
+    -moz-box-shadow: 3px 3px 3px #cb8aa0;
+}
+.submenu_profile p {
+    margin: 2% 3%;
+    padding: 2%;
 }
 
 /* Main styles */

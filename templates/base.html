@@ -28,7 +28,11 @@
             <div class="auth_container">
                 {% if request.user.is_authenticated %}
                     <div class="profile">
-                        <a href="{% url 'profile' request.user.pk %}">{{ request.user.last_name }} {{ request.user.first_name }}</a>
+                        <div><a href="{% url 'profile' request.user.pk %}">{{ request.user.last_name }} {{ request.user.first_name }}</a></div>
+                        <div class="submenu_profile" style="display: none">
+                            <div><p class="fa fa-gear"></p><a href="#">Настройки</a></div>
+                            <div><p class="fa fa-sign-out"></p><a style="color: #fa1919" href="{% url 'logout' %}">Выход</a></div>
+                        </div>
                     </div>
                     {% if request.user.avatar %}
                         <img src="{% thumbnail request.user.avatar 'default' %}" alt="{{ request.user.last_name }} {{ request.user.first_name }}">
