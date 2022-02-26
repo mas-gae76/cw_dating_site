@@ -21,7 +21,11 @@
                             <span class="rating_item"></span>
                         </div>
                     </div>
-                    <div class="rating_value">{{ user.average_rating|floatformat }}</div>
+                    {% if user.average_rating %}
+                        <div class="rating_value">{{ user.average_rating|floatformat }}</div>
+                    {% else %}
+                        <div class="rating_value">0</div>
+                    {% endif %}
                 </div>
                 <p>{{ user.birthday }}</p>
                 {% if user.gender == 'М' %}
@@ -36,7 +40,7 @@
                 {% else %}
                     <p>Пользователь не оставил информации о себе</p>
                 {% endif %}
-            {% if request.user.is_authenticated %}
+            {% if request.user.is_authenticated and is_review %}
                 <div class="rating_form">
                     <p>Вы ещё не оценивали этого участника. Хотите оценить?</p>
                     <form id="rating_form" method="get" name="{{ user.id }}" action="{% url 'profile' user.pk %}">

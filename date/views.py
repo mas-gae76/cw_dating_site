@@ -61,6 +61,18 @@ class DetailUserView(DetailView):
     def get_queryset(self):
         return cache.get('users').filter(id=self.kwargs['pk'])
 
+    def get_context_data(self, **kwargs):
+        context = super(DetailUserView, self).get_context_data(**kwargs)
+        context['current_year'] = datetime.today().year
+        if not cache.get('reviews'):
+            cache.add('reviews', User.objects.filter(ratings__sender=self.request.user), timeout=settings.CACHE_TTL)
+        if context['user'] not in cache.get('reviews'):
+            context['is_review'] = True
+        else:
+            context['is_review'] = False
+        print(cache.get('reviews'))
+        return context
+
 
 class UserLogoutView(LogoutView):
     next_page = 'index'
@@ -70,5 +82,7 @@ def rate_user(request, pk):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
         rating_value = request.POST.get('rating_value')
-        Rating.objects.create(user=User.objects.get(id=user_id), rating=rating_value, sender=request.user)
-        return redirect('profile')
+        rating = Rating(user=User.objects.get(id=user_id), rating=rating_value, sender=request.user)
+        rating.save()
+        cache.add('reviews', rating.user)
+        return redirect(reverse('profile'))

@@ -22,7 +22,11 @@
                             <span class="rating_item"></span>
                         </div>
                     </div>
-                    <div class="rating_value">{{ customer.average_rating|floatformat }}</div>
+                    {% if customer.average_rating %}
+                        <div class="rating_value">{{ customer.average_rating|floatformat }}</div>
+                    {% else %}
+                        <div class="rating_value">0</div>
+                    {% endif %}
                 </div>
                 <p>{{ customer.birthday }}</p>
             </div>
