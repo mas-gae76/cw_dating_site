@@ -69,6 +69,8 @@ const five = document.getElementById('fifth')
 
 const array = [one, two, three, four, five]
 const rating_form = document.getElementById('rating_form')
+const sympathy_form = document.getElementById('sympathy_form')
+const heart = document.querySelector('.fa-heart')
 
 if (one) {
     array.forEach(item => item.addEventListener('mouseover', (event) => {
@@ -87,26 +89,51 @@ if (one) {
             const user_id = e.target.name
             const rating_value = getRatingValue(value)
 
-
-                $.ajax({
-                    url: `http://127.0.0.1:8000/date/profile/${user_id}/rate`,
-                    type: 'post',
-                    headers: {
-                        'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
-                    },
-                    data: {
-                        'user_id': user_id,
-                        'rating_value': rating_value,
-                    },
-                    success: (response) => {
-                        if (response.sent) $('.rating_form').hide()
-                    },
-                    error: (error) => {
-                        console.log(error.responseJSON.errors)
-                    }
-                })
+            $.ajax({
+                url: `http://127.0.0.1:8000/date/profile/${user_id}/rate`,
+                type: 'post',
+                headers: {
+                    'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[1].value,
+                },
+                data: {
+                    'user_id': user_id,
+                    'rating_value': rating_value,
+                },
+                success: (response) => {
+                    if (response.sent) $('.rating_form').hide()
+                },
+                error: (error) => {
+                    console.log(error.responseJSON.errors)
+                }
+            })
         })
     }))
+}
+
+if (heart) {
+    heart.addEventListener('click', (e) => {
+        console.log(window.getComputedStyle(heart).color)
+        sympathy_form.addEventListener('submit', (event) => {
+            event.preventDefault()
+            const whom_id = event.target.name
+
+            $.ajax({
+                url: `http://127.0.0.1:8000/date/profile/${whom_id}/sympathize`,
+                type: 'post',
+                headers: {
+                    'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                },
+                data: {
+                    'user_id': whom_id,
+                },
+                success: (response) => {
+                    console.log(response)
+                },
+                error: (error) => {
+                }
+            })
+        })
+    })
 }
 
 $('.auth_container').hover(() => {
