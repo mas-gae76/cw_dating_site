@@ -99,10 +99,10 @@ if (one) {
                         'rating_value': rating_value,
                     },
                     success: (response) => {
-                        console.log(response)
+                        if (response.sent) $('.rating_form').hide()
                     },
                     error: (error) => {
-                        console.log(error)
+                        console.log(error.responseJSON.errors)
                     }
                 })
         })
