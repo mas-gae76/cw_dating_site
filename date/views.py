@@ -21,12 +21,12 @@ class UserView(ListView):
 
     def get_queryset(self):
         if 'users' in cache:
-            users = cache.get('users')
+            users = cache.get('users').exclude(id=self.request.user.id)
             return users
         else:
-            results = User.objects.annotate(average_rating=Avg('ratings__rating')).exclude(is_staff=True).exclude(id=self.request.user.id)
+            results = User.objects.annotate(average_rating=Avg('ratings__rating')).exclude(is_staff=True)
             cache.set('users', results, timeout=settings.CACHE_TTL)
-            return results
+            return results.exclude(id=self.request.user.id)
 
 
 class RegisterView(CreateView):
@@ -57,7 +57,7 @@ class DetailUserView(DetailView):
     template_name = 'profile.html'
 
     def get_queryset(self):
-        return User.objects.filter(id=self.kwargs['pk'])
+        return cache.get('users').filter(id=self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
         context = super(DetailUserView, self).get_context_data(**kwargs)
@@ -88,3 +88,19 @@ def rate_user(request, pk):
         rating = Rating(user=User.objects.get(id=user_id), rating=rating_value, sender=request.user)
         rating.save()
         return redirect(reverse('profile'), pk=pk)
+
+
+def sympathize(request, pk):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        existing1 = Sympathy.objects.filter(whom__id=user_id, who=request.user)
+        existing2 = Sympathy.objects.filter(whom=request.user, who__id=user_id)
+        print(existing2, existing1)
+        if len(existing1) == 0:
+            existing1.update(matching=True)
+        elif len(existing2) == 0:
+            existing2.update(matching=True)
+        else:
+            Sympathy.objects.create(who=request.user, whom_id=user_id)
+        return redirect('profile')
+
