@@ -231,6 +231,17 @@ input {
 .user_preview img {
     border-radius: 50%;
 }
+.fa-heart {
+    color: rgba(44, 42, 42, 0.42);
+    border: 1px solid #e0e6ed;
+    margin: 0;
+    padding: 1.5%;
+    border-radius: 55%;
+}
+.fa-heart:hover {
+    color: rgba(238, 68, 68, 0.83);
+    border: 1px solid rgba(44, 42, 42, 0.42);
+}
 /* Rating styles */
 .rating {
     display: flex;

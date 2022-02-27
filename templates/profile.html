@@ -9,6 +9,12 @@
                 {% else %}
                     <p><img src="{% static 'img/default.png' %}" alt="" style="width: 60px; height: 60px"></p>
                 {% endif %}
+
+                <form id="sympathy_form" method="get" action="{% url 'profile' user.pk %}" name="{{ user.id }}">
+                    {% csrf_token %}
+                    <button type="submit" class="fa fa-heart"></button>
+                </form>
+
                 <p>{{ user.last_name }} {{ user.first_name }}</p>
                 <div class="rating">
                     <div class="rating_body">
@@ -29,9 +35,9 @@
                 </div>
                 <p>Возраст: {{ age }}</p>
                 {% if user.gender == 'М' %}
-                    <p>Пол: Мужской</p>
+                    <p><i class="fa fa-male"></i>Пол: Мужской</p>
                 {% elif  user.gender == 'Ж' %}
-                    <p>Пол: Женский</p>
+                    <p><i class="fa fa-female"></i>Пол: Женский</p>
                 {% else %}
                     <p>Пол: Не указан</p>
                 {% endif %}
