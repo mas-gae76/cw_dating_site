@@ -4,6 +4,7 @@ from uuid import uuid4
 from PIL import Image
 from django.conf import settings
 from .utils import get_timestamp_path_user
+from django.urls import reverse
 
 
 class User(AbstractUser):
@@ -35,6 +36,9 @@ class User(AbstractUser):
             y = avatar.size[1] - watermark.size[1] - 20
             avatar.paste(watermark, (x, y), mask=watermark)
             avatar.save(self.avatar.path)
+
+    def get_absolute_url(self):
+        return reverse('profile', kwargs={'id': self.id})
 
     def __str__(self):
         return f'Участник {self.first_name} {self.last_name}: {self.email}'
