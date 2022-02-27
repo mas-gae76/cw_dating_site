@@ -27,7 +27,7 @@
                         <div class="rating_value">0</div>
                     {% endif %}
                 </div>
-                <p>{{ user.birthday }}</p>
+                <p>Возраст: {{ age }}</p>
                 {% if user.gender == 'М' %}
                     <p>Пол: Мужской</p>
                 {% elif  user.gender == 'Ж' %}
@@ -40,7 +40,7 @@
                 {% else %}
                     <p>Пользователь не оставил информации о себе</p>
                 {% endif %}
-            {% if request.user.is_authenticated and is_review %}
+            {% if request.user.is_authenticated and is_review and user != request.user %}
                 <div class="rating_form">
                     <p>Вы ещё не оценивали этого участника. Хотите оценить?</p>
                     <form id="rating_form" method="get" name="{{ user.id }}" action="{% url 'profile' user.pk %}">

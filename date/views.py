@@ -10,9 +10,7 @@ from django.shortcuts import redirect, render, reverse
 from django.conf import settings
 from django.core.cache import cache
 from django.db.models import Avg
-
-
-# TODO: удаление/обновление кэша при удалении/обновлении объекта БД
+from datetime import date
 
 
 class UserView(ListView):
@@ -26,7 +24,7 @@ class UserView(ListView):
             users = cache.get('users')
             return users
         else:
-            results = User.objects.annotate(average_rating=Avg('ratings__rating')).exclude(is_staff=True)
+            results = User.objects.annotate(average_rating=Avg('ratings__rating')).exclude(is_staff=True).exclude(id=self.request.user.id)
             cache.set('users', results, timeout=settings.CACHE_TTL)
             return results
 
@@ -59,18 +57,23 @@ class DetailUserView(DetailView):
     template_name = 'profile.html'
 
     def get_queryset(self):
-        return cache.get('users').filter(id=self.kwargs['pk'])
+        return User.objects.filter(id=self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
         context = super(DetailUserView, self).get_context_data(**kwargs)
         context['current_year'] = datetime.today().year
-        if not cache.get('reviews'):
-            cache.add('reviews', User.objects.filter(ratings__sender=self.request.user), timeout=settings.CACHE_TTL)
-        if context['user'] not in cache.get('reviews'):
+
+        today = date.today()
+        user_birthday = context['user'].birthday
+        context['age'] = today.year - user_birthday.year - ((today.month, today.day) < (user_birthday.month, user_birthday.day))
+
+        current_user = context['user'].id
+        rating_user_db = Rating.objects.filter(sender__id=self.request.user.id, user__id=current_user)
+
+        if len(rating_user_db) == 0:
             context['is_review'] = True
         else:
             context['is_review'] = False
-        print(cache.get('reviews'))
         return context
 
 
@@ -84,5 +87,4 @@ def rate_user(request, pk):
         rating_value = request.POST.get('rating_value')
         rating = Rating(user=User.objects.get(id=user_id), rating=rating_value, sender=request.user)
         rating.save()
-        cache.add('reviews', rating.user)
-        return redirect(reverse('profile'))
+        return redirect(reverse('profile'), pk=pk)
