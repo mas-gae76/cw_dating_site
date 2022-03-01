@@ -11,13 +11,17 @@ from django.conf import settings
 from django.core.cache import cache
 from django.db.models import Avg
 from datetime import date
+from django.http import JsonResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 
-class UserView(ListView):
+class UserView(LoginRequiredMixin, ListView):
     model = User
     paginate_by = 50
     template_name = 'index.html'
     extra_context = {'current_year': datetime.today().year}
+    login_url = 'login'
 
     def get_queryset(self):
         if 'users' in cache:
@@ -70,6 +74,8 @@ class DetailUserView(DetailView):
         current_user = context['user'].id
         rating_user_db = Rating.objects.filter(sender__id=self.request.user.id, user__id=current_user)
 
+        context['is_sympathized'] = Sympathy.objects.filter(who=self.request.user, whom__id=current_user)
+
         if len(rating_user_db) == 0:
             context['is_review'] = True
         else:
@@ -78,29 +84,42 @@ class DetailUserView(DetailView):
 
 
 class UserLogoutView(LogoutView):
-    next_page = 'index'
+    next_page = 'login'
 
 
+@login_required
 def rate_user(request, pk):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
         rating_value = request.POST.get('rating_value')
-        rating = Rating(user=User.objects.get(id=user_id), rating=rating_value, sender=request.user)
+        rating = Rating(user_id=user_id, rating=rating_value, sender=request.user)
         rating.save()
-        return redirect(reverse('profile'), pk=pk)
+        return JsonResponse({'result': True})
 
 
+@login_required
 def sympathize(request, pk):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
-        existing1 = Sympathy.objects.filter(whom__id=user_id, who=request.user)
-        existing2 = Sympathy.objects.filter(whom=request.user, who__id=user_id)
-        print(existing2, existing1)
-        if len(existing1) == 0:
-            existing1.update(matching=True)
-        elif len(existing2) == 0:
-            existing2.update(matching=True)
+        sympathy = True if request.POST.get('sympathize') == "true" else False
+        existing_1 = Sympathy.objects.filter(whom__id=user_id, who=request.user)
+        existing_2 = Sympathy.objects.filter(whom=request.user, who__id=user_id)
+
+        if len(existing_1) != 0:
+            matching_1 = existing_1.values('matching')[0]['matching']
+            process_sympathy(existing_1, matching_1, sympathy)
+
+        elif len(existing_2) != 0:
+            matching_2 = existing_2.values('matching')[0]['matching']
+            process_sympathy(existing_2, matching_2, sympathy)
         else:
             Sympathy.objects.create(who=request.user, whom_id=user_id)
-        return redirect('profile')
 
+        return JsonResponse({'result': sympathy})
+
+
+def process_sympathy(obj, matching, sympathy):
+    if not matching and not sympathy:
+        obj.delete()
+    else:
+        obj.update(matching=sympathy)
