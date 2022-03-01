@@ -10,9 +10,13 @@
                     <p><img src="{% static 'img/default.png' %}" alt="" style="width: 60px; height: 60px"></p>
                 {% endif %}
 
-                <form id="sympathy_form" method="get" action="{% url 'profile' user.pk %}" name="{{ user.id }}">
+                <form id="sympathy_form" method="post" action="{% url 'sympathize' user.pk %}" name="{{ user.id }}">
                     {% csrf_token %}
-                    <button type="submit" class="fa fa-heart"></button>
+                    {% if is_sympathized %}
+                        <button type="submit" class="fa fa-heart" style="color: rgba(238, 68, 68, 0.83)"></button>
+                    {% else %}
+                        <button type="submit" class="fa fa-heart"></button>
+                    {% endif %}
                 </form>
 
                 <p>{{ user.last_name }} {{ user.first_name }}</p>
@@ -49,7 +53,7 @@
             {% if request.user.is_authenticated and is_review and user != request.user %}
                 <div class="rating_form">
                     <p>Вы ещё не оценивали этого участника. Хотите оценить?</p>
-                    <form id="rating_form" method="get" name="{{ user.id }}" action="{% url 'profile' user.pk %}">
+                    <form id="rating_form" method="post" name="{{ user.id }}" action="{% url 'profile' user.pk %}">
                         {% csrf_token %}
                         <button type="submit" class="fa fa-star fa-2x" id="first"></button>
                         <button type="submit" class="fa fa-star fa-2x" id="second"></button>
