@@ -239,7 +239,6 @@ input {
     border-radius: 55%;
 }
 .fa-heart:hover {
-    color: rgba(238, 68, 68, 0.83);
     border: 1px solid rgba(44, 42, 42, 0.42);
 }
 /* Rating styles */
