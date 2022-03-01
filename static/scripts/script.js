@@ -85,7 +85,7 @@ if (one) {
     array.forEach(item => item.addEventListener('click', (event) => {
         const value = event.target.id
         rating_form.addEventListener('submit', (e) => {
-            event.preventDefault()
+            e.preventDefault()
             const user_id = e.target.name
             const rating_value = getRatingValue(value)
 
@@ -93,17 +93,15 @@ if (one) {
                 url: `http://127.0.0.1:8000/date/profile/${user_id}/rate`,
                 type: 'post',
                 headers: {
-                    'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[1].value,
+                    'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
                 },
                 data: {
                     'user_id': user_id,
                     'rating_value': rating_value,
                 },
-                success: (response) => {
-                    if (response.sent) $('.rating_form').hide()
-                },
-                error: (error) => {
-                    console.log(error.responseJSON.errors)
+            }).done((response) => {
+                if (response.result) {
+                    $('.rating_form').slideUp(400)
                 }
             })
         })
@@ -112,10 +110,12 @@ if (one) {
 
 if (heart) {
     heart.addEventListener('click', (e) => {
-        console.log(window.getComputedStyle(heart).color)
         sympathy_form.addEventListener('submit', (event) => {
             event.preventDefault()
             const whom_id = event.target.name
+            const heart_color = window.getComputedStyle(heart).color
+            let sympathize = true
+            if (heart_color === "rgba(238, 68, 68, 0.83)") sympathize = false
 
             $.ajax({
                 url: `http://127.0.0.1:8000/date/profile/${whom_id}/sympathize`,
@@ -125,12 +125,13 @@ if (heart) {
                 },
                 data: {
                     'user_id': whom_id,
+                    'sympathize': sympathize,
                 },
-                success: (response) => {
-                    console.log(response)
-                },
-                error: (error) => {
-                }
+            }).done((response) => {
+                if (response.result)
+                    $(".fa-heart").css('color', "rgba(238, 68, 68, 0.83)")
+                else
+                    $(".fa-heart").css('color', "rgba(44, 42, 42, 0.42)")
             })
         })
     })
