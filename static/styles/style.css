@@ -221,22 +221,50 @@ input {
     grid-template-columns: repeat(4, 25%);
     grid-gap: 20px;
 }
-.users_container .user_preview {
-    border: 1.5px solid rgba(0, 0, 0, 0.29);
+.user_preview {
+    border: 1px solid rgba(0, 0, 0, 0.29);
     border-radius: 20px;
     font-size: .65em;
     width: 83%;
     padding: 3%;
 }
+.user_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+    font-size: 1.05em;
+}
+.user_container .user_preview {
+    width: 40%;
+    padding: 1.5%;
+}
+.user_preview p {
+    margin-bottom: 1%;
+    display: block;
+}
 .user_preview img {
     border-radius: 50%;
+}
+.preview_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.initial {
+    width: 40%;
+}
+.heart_container {
+    float: right;
+    width: 45%;
 }
 .fa-heart {
     color: rgba(44, 42, 42, 0.42);
     border: 1px solid #e0e6ed;
     margin: 0;
-    padding: 1.5%;
+    padding: 4%;
     border-radius: 55%;
+    float: right;
 }
 .fa-heart:hover {
     border: 1px solid rgba(44, 42, 42, 0.42);
@@ -302,6 +330,10 @@ input {
 }
 /* Footer styles */
 footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
     background: #e0e6ed;
 }
 .footer_container {
@@ -310,4 +342,7 @@ footer {
 }
 .footer_container .title {
     font-size: 1.1em;
+}
+i {
+    margin-right: 1%;
 }
