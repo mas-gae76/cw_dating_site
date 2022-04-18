@@ -14,12 +14,22 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 WATERMARK_PATH = os.path.join(BASE_DIR, 'static/img/full_logo.png')
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'default': {
+            'size': (60, 60),
+            'crop': 'scale',
+        },
+    },
+}
 
 
 # Quick-start development settings - unsuitable for production
@@ -45,6 +55,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_cleanup',
     'date.apps.DateConfig',
+    'easy_thumbnails',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +66,12 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+INTERNAL_IPS = [
+    '127.0.0.1',
 ]
 
 ROOT_URLCONF = 'cw_dating_site.urls'
@@ -93,6 +110,18 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient'
+        }
+    }
+}
+
+CACHE_TTL = 60 * 15
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -116,7 +145,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'Europe/Moscow'
 

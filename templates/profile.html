@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% block content %}
+    <div class="user_container">
+        <div class="user_preview">
+            <div class="preview_header">
+                <div class="initial">
+                    {% if user.avatar %}
+                        <p><img src="{% thumbnail user.avatar 'default' %}" alt="{{ user.last_name }} {{ user.first_name }}"></p>
+                    {% else %}
+                        <p><img src="{% static 'img/default.png' %}" alt="" style="width: 60px; height: 60px"></p>
+                    {% endif %}
+                    <p>{{ user.last_name }} {{ user.first_name }}</p>
+                </div>
+                <div class="heart_container">
+                    <form id="sympathy_form" method="post" action="{% url 'sympathize' user.pk %}" name="{{ user.id }}">
+                        {% csrf_token %}
+                        {% if is_sympathized %}
+                            <button type="submit" class="fa fa-heart" style="color: rgba(238, 68, 68, 0.83)"></button>
+                        {% else %}
+                            <button type="submit" class="fa fa-heart"></button>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+                <div class="rating">
+                    <div class="rating_body">
+                        <div class="rating_active"></div>
+                        <div class="rating_items">
+                            <span class="rating_item"></span>
+                            <span class="rating_item"></span>
+                            <span class="rating_item"></span>
+                            <span class="rating_item"></span>
+                            <span class="rating_item"></span>
+                        </div>
+                    </div>
+                    {% if user.average_rating %}
+                        <div class="rating_value">{{ user.average_rating|floatformat }}</div>
+                    {% else %}
+                        <div class="rating_value">0</div>
+                    {% endif %}
+                </div>
+                <p>Возраст: {{ age }}</p>
+                {% if user.gender == 'М' %}
+                    <p><i class="fa fa-male"></i>Пол: Мужской</p>
+                {% elif  user.gender == 'Ж' %}
+                    <p><i class="fa fa-female"></i>Пол: Женский</p>
+                {% else %}
+                    <p>Пол: Не указан</p>
+                {% endif %}
+                {% if user.description %}
+                    <p>{{ user.description }}</p>
+                {% else %}
+                    <p>Пользователь не оставил информации о себе</p>
+                {% endif %}
+            {% if request.user.is_authenticated and is_review and user != request.user %}
+                <div class="rating_form">
+                    <p>Вы ещё не оценивали этого участника. Хотите оценить?</p>
+                    <form id="rating_form" method="post" name="{{ user.id }}" action="{% url 'profile' user.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="fa fa-star fa-2x" id="first"></button>
+                        <button type="submit" class="fa fa-star fa-2x" id="second"></button>
+                        <button type="submit" class="fa fa-star fa-2x" id="third"></button>
+                        <button type="submit" class="fa fa-star fa-2x" id="fourth"></button>
+                        <button type="submit" class="fa fa-star fa-2x" id="fifth"></button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

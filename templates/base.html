@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+{% load static %}
+{% load thumbnail %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GetPair - {% block title %}сайт знакомств{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/logo.ico' %}">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+            integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+            crossorigin="anonymous">
+    </script>
+    <script defer src="{% static 'scripts/script.js' %}"></script>
+</head>
+<body>
+    <header>
+        <nav class="header_container">
+            <div class="logo_container">
+                <a class="logo" href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt="GetPair" title="GetPair"></a>
+                <div class="describer">
+                    <div class="title"><h2 translate="no">GetPair</h2></div>
+                    <div class="role">cайт знакомств</div>
+                </div>
+            </div>
+            <div class="auth_container">
+                {% if request.user.is_authenticated %}
+                    <div class="profile">
+                        <div><a href="{% url 'profile' request.user.pk %}">{{ request.user.last_name }} {{ request.user.first_name }}</a></div>
+                        <div class="submenu_profile" style="display: none">
+                            <div><p class="fa fa-gear"></p><a href="#">Настройки</a></div>
+                            <div><p class="fa fa-sign-out"></p><a style="color: rgba(238, 68, 68, 0.83)" href="{% url 'logout' %}">Выход</a></div>
+                        </div>
+                    </div>
+                    {% if request.user.avatar %}
+                        <img src="{% thumbnail request.user.avatar 'default' %}" alt="{{ request.user.last_name }} {{ request.user.first_name }}">
+                    {% else %}
+                        <img src="{% static 'img/default.png' %}" alt="" style="width: 60px; height: 60px">
+                    {% endif %}
+                {% else %}
+                    <div class="nav-toggle"><span></span></div>
+                    <div class="login"><a href="{% url 'login' %}" style="color:#000">Вход</a></div>
+                    <div class="register"><a href="{% url 'signup' %}" style="color:#fff">Регистрация</a></div>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <div class="footer_container">
+        <div class="logo">
+            <div class="copyright-mark">
+                <p><img src="{% static 'img/logo.ico' %}" alt="GetPair" title="GetPair">
+                <span class="title">GetPair</span> - сайт знакомств</p>
+            </div>
+            <div>&copy; {{ current_year }} Все права защищены</div>
+        </div>
+        <div class="privacy">
+            <a href="#">Политика конфиденциальности</a>
+        </div>
+        <div class="terms">
+            <a href="#">Условия пользования</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

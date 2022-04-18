@@ -9,10 +9,16 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'last_name', 'email', )
 
 
-@admin.register(UserRating)
+@admin.register(Rating)
 class UserRatingAdmin(admin.ModelAdmin):
     list_display = ('user', 'rating')
     search_fields = ('user', )
+
+
+@admin.register(Sympathy)
+class UserSympathyAdmin(admin.ModelAdmin):
+    list_display = ('who', 'whom', 'matching')
+    search_fields = ('who', 'whom')
 
 
 @admin.register(UserSettings)

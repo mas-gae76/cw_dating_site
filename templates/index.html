@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% block content %}
+    <div class="users_container">
+        {% for customer in user_list %}
+            <div class="user_preview">
+                {% if customer.avatar %}
+                    <p><img src="{% thumbnail customer.avatar 'default' %}" alt="{{ customer.last_name }} {{ customer.first_name }}"></p>
+                {% else %}
+                    <p><img src="{% static 'img/default.png' %}" alt="" style="width: 60px; height: 60px"></p>
+                {% endif %}
+                <p><a href="{% url 'profile' customer.pk %}">{{ customer.last_name }} {{ customer.first_name }}</a></p>
+                <div class="rating">
+                    <div class="rating_body">
+                        <div class="rating_active"></div>
+                        <div class="rating_items">
+                            <span class="rating_item"></span>
+                            <span class="rating_item"></span>
+                            <span class="rating_item"></span>
+                            <span class="rating_item"></span>
+                            <span class="rating_item"></span>
+                        </div>
+                    </div>
+                    {% if customer.average_rating %}
+                        <div class="rating_value">{{ customer.average_rating|floatformat }}</div>
+                    {% else %}
+                        <div class="rating_value">0</div>
+                    {% endif %}
+                </div>
+                <p>{{ customer.birthday }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
