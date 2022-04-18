@@ -15,6 +15,12 @@ class UserRatingAdmin(admin.ModelAdmin):
     search_fields = ('user', )
 
 
+@admin.register(Sympathy)
+class UserSympathyAdmin(admin.ModelAdmin):
+    list_display = ('who', 'whom', 'matching')
+    search_fields = ('who', 'whom')
+
+
 @admin.register(UserSettings)
 class UserRatingAdmin(admin.ModelAdmin):
     list_display = ('user', 'setting', 'value')

@@ -20,7 +20,7 @@ class User(AbstractUser):
     username = models.CharField(blank=True, verbose_name='Никнейм', max_length=10)
     email = models.EmailField(verbose_name='Email', unique=True, max_length=128)
     birthday = models.DateField(verbose_name='Дата рождения')
-    description = models.CharField(verbose_name='Описание', max_length=150, null=True)
+    description = models.CharField(verbose_name='Описание', max_length=150, null=True, default=None)
     avatar = models.ImageField(verbose_name='Фото', default=None, upload_to=get_timestamp_path_user, blank=True)
     gender = models.CharField(max_length=1, verbose_name='Пол', choices=Gender.choices, default=None)
     USERNAME_FIELD = 'email'
