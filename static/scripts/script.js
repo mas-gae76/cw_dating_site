@@ -138,7 +138,7 @@ if (heart) {
 }
 
 $('.auth_container').hover(() => {
-    $('.submenu_profile').slideToggle(500);
+    $('.submenu_profile').slideToggle()
 })
 
 
