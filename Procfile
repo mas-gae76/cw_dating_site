@@ -1,0 +1,1 @@
+web: gunicorn cw_dating_site.wsgi --log-file -
